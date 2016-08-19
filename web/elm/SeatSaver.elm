@@ -13,35 +13,40 @@ type alias Seat =
 type alias Model =
   List Seat
 
-init : Model
+init : (Model, Cmd msg)
 init =
-  [ { seatNo = 1, occupied = False }
-  , { seatNo = 2, occupied = False }
-  , { seatNo = 3, occupied = False }
-  , { seatNo = 4, occupied = False }
-  , { seatNo = 5, occupied = False }
-  , { seatNo = 6, occupied = False }
-  , { seatNo = 7, occupied = False }
-  , { seatNo = 8, occupied = False }
-  , { seatNo = 9, occupied = False }
-  , { seatNo = 10, occupied = False }
-  , { seatNo = 11, occupied = False }
-  , { seatNo = 12, occupied = False }
-  ]
+  let
+    seats =
+      [ { seatNo = 1, occupied = False }
+      , { seatNo = 2, occupied = False }
+      , { seatNo = 3, occupied = False }
+      , { seatNo = 4, occupied = False }
+      , { seatNo = 5, occupied = False }
+      , { seatNo = 6, occupied = False }
+      , { seatNo = 7, occupied = False }
+      , { seatNo = 8, occupied = False }
+      , { seatNo = 9, occupied = False }
+      , { seatNo = 10, occupied = False }
+      , { seatNo = 11, occupied = False }
+      , { seatNo = 12, occupied = False }
+      ]
+  in
+    (seats, Cmd.none)
 
 main : Program Never
 main =
-  Html.App.beginnerProgram
-    { model = init
+  Html.App.program
+    { init = init
     , update = update
     , view = view
+    , subscriptions = \_ -> Sub.none
     }
 
 -- UPDATE
 
 type Msg = Toggle Seat
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd msg)
 update action model =
   case action of
     Toggle seatToToggle ->
@@ -51,7 +56,7 @@ update action model =
             { seatFromModel | occupied = not seatFromModel.occupied }
           else seatFromModel
       in
-        List.map updateSeat model
+        (List.map updateSeat model, Cmd.none)
 
 -- VIEW
 

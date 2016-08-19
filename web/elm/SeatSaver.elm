@@ -1,8 +1,9 @@
 module SeatSaver exposing(..)
 
-import Html exposing (ul, li, text, Html)
+import Html exposing (ul, li, text, div, hr, Html)
 import Html.Attributes exposing (class)
 import Html.App
+import Html.Events exposing (onClick)
 
 type alias Seat =
   { seatNo : Int
@@ -56,8 +57,20 @@ update action model =
 
 view : Model -> Html Msg
 view model =
-  ul [class "seats"] (List.map seatItem model)
+  div []
+  [ ul [class "seats"] (List.indexedMap seatItem model)
+  , hr [] []
+  , text (toString model)
+  ]
 
-seatItem : Seat -> Html Msg
-seatItem seat =
-  li [class "seat available"] [ text (toString seat.seatNo) ]
+seatItem : Int -> Seat -> Html Msg
+seatItem model seat =
+  let
+    occupiedClass =
+      if seat.occupied then "occupied" else "available"
+  in
+    li
+      [ class ("seat " ++ occupiedClass)
+      , onClick (Toggle seat)
+      ]
+      [ text (toString seat.seatNo) ]

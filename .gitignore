@@ -4,7 +4,7 @@
 /deps
 /*.ez
 /a.out
-/priv
+/priv/static
 web/elm/elm-stuff
 web/static/vendor/seatsaver.js
 
